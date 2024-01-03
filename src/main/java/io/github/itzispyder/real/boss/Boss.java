@@ -84,6 +84,10 @@ public abstract class Boss implements Global {
 
     @SuppressWarnings("all")
     public <T extends LivingEntity> void spawn(Class<T> entityClass, Location location, Consumer<T> action) {
+        if (this.exists()) {
+            return;
+        }
+
         T entity = location.getWorld().spawn(location, entityClass);
         entity.registerAttribute(Attribute.GENERIC_MAX_HEALTH);
         entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(getMaxHealth());
