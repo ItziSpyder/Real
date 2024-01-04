@@ -6,6 +6,7 @@ import io.github.itzispyder.pdk.utils.ServerUtils;
 import io.github.itzispyder.pdk.utils.raytracers.CustomDisplayRaytracer;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -16,9 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public abstract class Boss implements Global {
-    
+
+    private static final Predicate<Entity> IS_TARGET = ent -> ent instanceof Player p && !p.isDead() && (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE);
     private static final Set<Boss> currentBosses = new HashSet<>();
     private final Stack<Stage> stages;
     private final List<Entity> minions;
@@ -135,11 +138,15 @@ public abstract class Boss implements Global {
     }
 
     public List<Player> getNearbyTargets(int range) {
-        return getPoint().getNearbyEntities(getEntity(), range, false, ent -> ent instanceof Player).stream().map(ent -> (Player) ent).toList();
+        return getPoint().getNearbyEntities(getEntity(), range, false, IS_TARGET).stream().map(ent -> (Player) ent).toList();
     }
 
     public Entity getEntity() {
         return entity;
+    }
+
+    public LivingEntity getLivingEntity() {
+        return (LivingEntity) entity;
     }
 
     public boolean hasSpawned() {
@@ -248,6 +255,10 @@ public abstract class Boss implements Global {
         return minion;
     }
 
+    public <T extends Entity> T spawnMinion(Class<T> entityClass) {
+        return spawnMinion(getLocation(), entityClass);
+    }
+
     public List<Entity> getMinions() {
         return minions;
     }
@@ -280,6 +291,10 @@ public abstract class Boss implements Global {
             return false;
         }
         return boss.getEntity() == this.getEntity();
+    }
+
+    public void fakeChat(String msg) {
+        ServerUtils.dmEachPlayer("§f<%s§f> %s".formatted(getDisplayName(), msg));
     }
 
     private class BossBarListener implements BossBar.Listener {

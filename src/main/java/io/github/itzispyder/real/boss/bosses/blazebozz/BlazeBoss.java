@@ -1,13 +1,12 @@
 package io.github.itzispyder.real.boss.bosses.blazebozz;
 
-import io.github.itzispyder.pdk.utils.ServerUtils;
 import io.github.itzispyder.pdk.utils.misc.SoundPlayer;
 import io.github.itzispyder.real.boss.Attack;
 import io.github.itzispyder.real.boss.Boss;
 import io.github.itzispyder.real.boss.Stage;
-import io.github.itzispyder.real.boss.bosses.blazebozz.attacks.DashAttack;
 import io.github.itzispyder.real.boss.bosses.blazebozz.attacks.FireballAttack;
 import io.github.itzispyder.real.boss.bosses.blazebozz.attacks.MinionAttack;
+import io.github.itzispyder.real.boss.common.DashAttack;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -85,15 +84,11 @@ public class BlazeBoss extends Boss {
         SoundPlayer sound = new SoundPlayer(boss.getLocation(), Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE, 10, 0.1F);
         sound.playWithin(64);
 
-        ServerUtils.dmEachPlayer(color("&f<%s&f> Noooooo... you BEAT ME- niggers niggas niggers").formatted(boss.getDisplayName()));
+        boss.fakeChat("Noooooo... you BEAT ME- niggers niggas niggers");
     }
 
     @Override
     public void onElevate(Boss boss, Stage before, Stage after) {
-        ServerUtils.dmEachPlayer(color("&f<%s&f> Dang it, progressing from &7%s&f to &7%s&f").formatted(
-                boss.getDisplayName(),
-                before.getName(),
-                after.getName()
-        ));
+        boss.fakeChat(color("Dang it, progressing from &7%s&f to &7%s&f").formatted(before.getName(), after.getName()));
     }
 }

@@ -1,4 +1,4 @@
-package io.github.itzispyder.real.boss.bosses.blazebozz.attacks;
+package io.github.itzispyder.real.boss.common;
 
 import io.github.itzispyder.pdk.utils.misc.Randomizer;
 import io.github.itzispyder.real.boss.Attack;

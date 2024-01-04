@@ -10,11 +10,11 @@ import java.util.List;
 
 public class Stage {
 
-    private final String name;
     private final int maxHealth;
     private final float progressTrigger;
     private final List<Attack> attacks;
     private final Randomizer random;
+    private String name;
 
     public Stage(String name, int maxHealth, float progressTrigger, List<Attack> attacks) {
         this.maxHealth = maxHealth;
@@ -55,6 +55,10 @@ public class Stage {
 
     public String getName() {
         return Global.instance.color(name);
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public float getProgressTrigger() {

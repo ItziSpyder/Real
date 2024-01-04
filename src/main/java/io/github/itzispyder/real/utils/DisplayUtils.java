@@ -36,7 +36,7 @@ public class DisplayUtils implements Global {
     }
 
     public static void ring(Location loc, double radius, Consumer<Location> action) {
-        for (int theta = 0; theta < 360; theta += 3) {
+        for (int theta = 0; theta < 360; theta += 10) {
             double x = Math.cos(Math.toRadians(theta)) * radius;
             double z = Math.sin(Math.toRadians(theta)) * radius;
             Location newLoc = loc.clone().add(x, 0, z);
@@ -61,8 +61,41 @@ public class DisplayUtils implements Global {
         }
     }
 
+    public static void helix(Location loc, double radius, Consumer<Location> action, double gap, int height) {
+        int theta = 0;
+        for (double y = 0; y <= height; y += gap) {
+            double x = Math.cos(Math.toRadians(theta)) * radius;
+            double z = Math.sin(Math.toRadians(theta)) * radius;
+
+            Location newLoc = loc.clone().add(x, y, z);
+            action.accept(newLoc);
+            theta += 10;
+        }
+    }
+
+    public static void vortex(Location loc, double radius, Consumer<Location> action, double gapH, double gapV, int height) {
+        double r = radius;
+        int theta = 0;
+        for (double y = 0; y <= height; y += gapV) {
+            double x = Math.cos(Math.toRadians(theta)) * r;
+            double z = Math.sin(Math.toRadians(theta)) * r;
+
+            Location newLoc = loc.clone().add(x, y, z);
+            action.accept(newLoc);
+            r += gapH;
+            theta += 10;
+        }
+    }
+
+    public static void beam(Location loc, Consumer<Location> action, double gap, int height) {
+        for (double y = 0; y <= height; y += gap) {
+            Location newLoc = loc.clone().add(0, y, 0);
+            action.accept(newLoc);
+        }
+    }
+
     public static void arc(Location loc, double radius, int angleFrom, int angleTo, Consumer<Location> action) {
-        for (int theta = angleFrom; theta < angleTo; theta += 3) {
+        for (int theta = angleFrom; theta < angleTo; theta += 10) {
             double x = Math.cos(Math.toRadians(theta)) * radius;
             double z = Math.sin(Math.toRadians(theta)) * radius;
             Location newLoc = loc.clone().add(x, 0, z);
